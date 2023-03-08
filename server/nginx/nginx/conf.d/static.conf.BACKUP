@@ -1,0 +1,83 @@
+limit_req_zone $binary_remote_addr zone=static_reqs:100m rate=1r/s;
+fastcgi_cache_path /cache/static levels=1:2 keys_zone=static.cache:100m max_size=32g inactive=30d use_temp_path=off;
+
+server {
+    listen       80;
+    #listen       443 ssl http2;
+
+    server_name  static.info24.ru;
+
+    client_max_body_size 10k;
+
+    #include inc/ssl.conf;
+
+    root /cropper;
+
+    access_log  /var/log/nginx/static.log main;
+
+    include /etc/nginx/inc/security.conf;
+
+    location = /favicon.ico {
+        log_not_found off;
+        access_log off;
+    }
+
+    location = /robots.txt {
+        log_not_found off;
+        access_log off;
+    }
+
+    location /
+    {
+        autoindex off;
+
+        try_files $uri $uri/ /crop.php?path=$request_uri;
+
+        #rewrite ^(.*)$ /crop.php?path=$1 last;
+    }
+
+    set $cache_key	$host$request_method$request_uri;
+    set $skip_cache	1;
+
+    # PHP
+    location ~ \.php$
+    {
+    	#limit_req zone=static_reqs burst=50 nodelay;
+
+    	#if ($request_method !~ ^(GET|HEAD)$){
+    	#    return 403;
+    	#}
+
+    	limit_except GET {
+    	    deny  all;
+    	}
+
+        fastcgi_pass                    unicropper:9000;
+        fastcgi_param                   SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        fastcgi_split_path_info         ^(.+\.php)(/.+)$;
+
+        include                         fastcgi_params;
+
+        fastcgi_read_timeout            300;
+        fastcgi_buffer_size             32k;
+        fastcgi_buffers                 16 16k;
+        fastcgi_temp_file_write_size    64k;
+        fastcgi_busy_buffers_size       64k;
+
+        fastcgi_cache_methods GET HEAD;
+        fastcgi_ignore_headers X-Accel-Expires Expires Cache-Control Set-Cookie;
+        fastcgi_cache_bypass $skip_cache;
+        fastcgi_no_cache $skip_cache;
+        fastcgi_cache_key $cache_key;
+        fastcgi_cache static.cache;
+        fastcgi_cache_valid 200 30d;
+        fastcgi_cache_valid 404 1m;
+        fastcgi_cache_valid 301 302 1m;
+        fastcgi_cache_min_uses 1;
+        fastcgi_cache_lock on;
+        fastcgi_cache_use_stale updating error timeout invalid_header http_500 http_503;
+
+        add_header X-Cache-Status $upstream_cache_status always;
+	add_header "Access-Control-Allow-Origin" "*" always;
+    }
+}

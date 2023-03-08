@@ -1,0 +1,1 @@
+0 * * * * cd /etc/csf && /usr/bin/python /etc/csf/ip.py
