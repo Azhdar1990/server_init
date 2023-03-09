@@ -31,13 +31,12 @@ fi
 export GRAYLOG_HOSTNAME=$HOSTNAME
 echo $GRAYLOG_HOSTNAME
 
-# GEN SSH KEY
-# echo "####################################"
-# echo "ADD PUBKEY TO PROJECT-TEMPLATE REPO:"
-# echo "####################################"
-# ssh-keygen -b 2048 -t rsa -f /root/.ssh/id_rsa -q -N "" && \
-# cat /root/.ssh/id_rsa.pub
-# read -n 1 -p "press any key to continue..."
+echo "####################################"
+echo "ADD PUBKEY TO PROJECT-TEMPLATE REPO:"
+echo "####################################"
+ssh-keygen -b 2048 -t rsa -f /root/.ssh/id_rsa -q -N "" && \
+cat /root/.ssh/id_rsa.pub
+read -n 1 -p "press any key to continue..."
 
 echo "####################################"
 echo "INSTALL TOOLS"
@@ -197,9 +196,9 @@ echo "CREATE CONTAINERS..."
 echo "####################################"
 cd /home && \
 docker-compose up -d
-# docker-compose pull && \
-# docker-compose up -d --no-recreate && \
-# docker logout && \
+docker-compose pull && \
+docker-compose up -d --no-recreate && \
+docker logout && \
 
 # echo "####################################"
 # echo "RE-CREATE DOCKER RULES"
