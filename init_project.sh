@@ -39,7 +39,9 @@ echo $GRAYLOG_HOSTNAME
 # cat /root/.ssh/id_rsa.pub
 # read -n 1 -p "press any key to continue..."
 
-# INSTALL TOOLS
+echo "####################################"
+echo "INSTALL TOOLS"
+echo "####################################"
 apt install -y htop iftop nload iotop psmisc net-tools bind9-utils sendmail ncdu wget mc ipset unzip git pwgen supervisor && \
 
 echo "####################################"
@@ -131,7 +133,7 @@ echo "####################################"
 # ssh-keyscan -p 54322 gitlab.servers.tools >> ~/.ssh/known_hosts
 git config --global user.name "Azhdar Maniyev"
 git config --global user.email "amaniyev@gmail.com"
-git clone ssh://git@gitlab.servers.tools:54322/servers/server_init.git && \
+git clone ssh://git@github.com:Azhdar1990/server_init.git && \
 rm -rf server_init/init_project.sh && \
 cp -rf server_init/* /home/ && \
 rm -rf server_init
@@ -175,15 +177,6 @@ chmod +x /usr/bin/docker-compose
 # echo "4f73c02b-426e-4880-8592-6896272863f1" | docker login --username renatkalimulin --password-stdin
 
 echo "####################################"
-echo "CREATE CONTAINERS..."
-echo "####################################"
-cd /home && \
-docker-compose up -d
-# docker-compose pull && \
-# docker-compose up -d --no-recreate && \
-# docker logout && \
-
-echo "####################################"
 echo "INSTALL CSF..."
 echo "####################################"
 cd ~ && \
@@ -198,6 +191,15 @@ rm -rf ./csf ./csf.tgz /home/server/csf && \
 ln -s /etc/csf && \
 # csf -r && \ # WILL BE AUTO RESTARTED AFTER IP CRON
 csf --lfd start && \
+
+echo "####################################"
+echo "CREATE CONTAINERS..."
+echo "####################################"
+cd /home && \
+docker-compose up -d
+# docker-compose pull && \
+# docker-compose up -d --no-recreate && \
+# docker logout && \
 
 # echo "####################################"
 # echo "RE-CREATE DOCKER RULES"
@@ -222,7 +224,7 @@ echo "####################################"
 crontab -l > crontab_new
 echo "* * * * * /usr/bin/python3 /home/server/scripts/ip.py" >> crontab_new
 echo "@reboot sleep 2 && /usr/sbin/csf -r" >> crontab_new
-echo "#0 0 * * 6 /home/server/scripts/cloudflare.sh && sleep 2 && /bin/docker exec -t nginx /usr/sbin/nginx -s reload &" >> crontab_new
+echo "0 0 * * 6 /home/server/scripts/cloudflare.sh && sleep 2 && /bin/docker exec -t openresty /usr/sbin/nginx -s reload &" >> crontab_new
 crontab crontab_new
 rm crontab_new
 

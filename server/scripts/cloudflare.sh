@@ -1,7 +1,7 @@
 #! /bin/bash 
 # # CREATE ROOT CRON TO RUN SCRIPT, RELOAD NGINX HOUR LATER 
 # 
-CloudFlareConf="/home/naxchivan/nginx/inc/loudflare.conf" 
+CloudFlareConf="/home/nginx/inc/сloudflare.conf" 
 IPV4=$(curl -s "https://www.cloudflare.com/ips-v4") 
 IPV6=$(curl -s "https://www.cloudflare.com/ips-v6") 
 DATE="$(date)" 
