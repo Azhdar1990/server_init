@@ -193,6 +193,11 @@ ln -s /etc/csf && \
 csf --lfd start && \
 
 echo "####################################"
+echo "RE-CREATE DOCKER RULES"
+echo "####################################"
+systemctl restart docker && \
+
+echo "####################################"
 echo "CREATE CONTAINERS..."
 echo "####################################"
 cd /home && \
@@ -200,11 +205,6 @@ docker-compose up -d
 docker-compose pull && \
 docker-compose up -d --no-recreate && \
 docker logout && \
-
-# echo "####################################"
-# echo "RE-CREATE DOCKER RULES"
-# echo "####################################"
-# systemctl restart docker && \
 
 # echo "####################################"
 # echo "INSTALL IP CRON..."
