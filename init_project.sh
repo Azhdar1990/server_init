@@ -219,6 +219,8 @@ echo "ADDING IP.PY to CRONTAB..."
 echo "####################################"
 crontab -l > crontab_new
 echo "* * * * * /usr/bin/python3 /home/server/scripts/ip.py" >> crontab_new
+echo "@reboot sleep 2 && /usr/sbin/csf -r" >> crontab_new
+echo "#0 0 * * 6 /home/server/scripts/cloudflare.sh && sleep 2 && /bin/docker exec -t nginx /usr/sbin/nginx -s reload &" >> crontab_new
 crontab crontab_new
 rm crontab_new
 
