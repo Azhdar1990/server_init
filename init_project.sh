@@ -130,10 +130,10 @@ systemctl enable docker --now
 echo "####################################"
 echo "CLONE PROJECT TEMPLATE..."
 echo "####################################"
-# ssh-keyscan -p 54322 gitlab.servers.tools >> ~/.ssh/known_hosts
+ssh-keyscan -p 54322 github.com >> ~/.ssh/known_hosts
 git config --global user.name "Azhdar Maniyev"
 git config --global user.email "amaniyev@gmail.com"
-git clone ssh://git@github.com:Azhdar1990/server_init.git && \
+git clone git@github.com:Azhdar1990/server_init.git && \
 rm -rf server_init/init_project.sh && \
 cp -rf server_init/* /home/ && \
 rm -rf server_init
