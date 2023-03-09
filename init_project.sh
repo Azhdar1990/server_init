@@ -119,6 +119,12 @@ apt update && \
 apt install -y docker-ce docker-ce-cli containerd.io && \
 systemctl enable docker --now
 
+echo "####################################"
+echo "INSTALL DOCKER-COMPOSE..."
+echo "####################################"
+curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/bin/docker-compose && \
+chmod +x /usr/bin/docker-compose
+
 # echo "####################################"
 # echo "CREATE LINKS..."
 # echo "####################################"
@@ -162,12 +168,6 @@ ln -s /etc/mysql/mariadb.cnf /home/server/mysql/my.cnf
 # mkdir -p /home/server/elasticsearch/data && \
 # chmod g+rwx /home/server/elasticsearch/data && \
 # chown -R 1000:1000 /home/server/elasticsearch/data
-
-echo "####################################"
-echo "INSTALL DOCKER-COMPOSE..."
-echo "####################################"
-curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/bin/docker-compose && \
-chmod +x /usr/bin/docker-compose
 
 # echo "####################################"
 # echo "LOGIN TO DOCKER HUB..."
