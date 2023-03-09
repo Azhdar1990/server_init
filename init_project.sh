@@ -197,6 +197,10 @@ echo "RE-CREATE DOCKER RULES"
 echo "####################################"
 systemctl restart docker && \
 
+echo "####################################"
+echo " CREATING LOG FOLDER FOR DOCKER CONTAINERS..."
+echo "####################################"
+
 mkdir /home/logs
 chmod -R 777 /home/logs/
 
