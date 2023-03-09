@@ -174,9 +174,11 @@ chmod +x /usr/bin/docker-compose
 # cd /home && \
 # echo "4f73c02b-426e-4880-8592-6896272863f1" | docker login --username renatkalimulin --password-stdin
 
-# echo "####################################"
-# echo "CREATE CONTAINERS..."
-# echo "####################################"
+echo "####################################"
+echo "CREATE CONTAINERS..."
+echo "####################################"
+cd /home && \
+docker-compose up -d
 # docker-compose pull && \
 # docker-compose up -d --no-recreate && \
 # docker logout && \
@@ -202,20 +204,20 @@ csf --lfd start && \
 # echo "####################################"
 # systemctl restart docker && \
 
-echo "####################################"
-echo "INSTALL IP CRON..."
-echo "####################################"
-apt -y install python2 && \
-ln -s /usr/bin/python2 /usr/bin/python && \
-curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py && \
-python get-pip.py && \
-rm -rf get-pip.py && \
-pip2 install requests && \
-python /etc/csf/ip.py
-cat /etc/csf/cron > /var/spool/cron/crontabs/root
+# echo "####################################"
+# echo "INSTALL IP CRON..."
+# echo "####################################"
+# apt -y install python2 && \
+# ln -s /usr/bin/python2 /usr/bin/python && \
+# curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py && \
+# python get-pip.py && \
+# rm -rf get-pip.py && \
+# pip2 install requests && \
+# python /etc/csf/ip.py
+# cat /etc/csf/cron > /var/spool/cron/crontabs/root
 
 echo "####################################"
-echo "ADDING IP.PY to CRONTAB..."
+echo "ADDING SCRIPTS to CRONTAB..."
 echo "####################################"
 crontab -l > crontab_new
 echo "* * * * * /usr/bin/python3 /home/server/scripts/ip.py" >> crontab_new
